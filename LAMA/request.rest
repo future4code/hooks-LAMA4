@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ###  Registrar banda
-POST http://localhost:3003/band/adicionar 
+POST http://localhost:3003/band/add 
 Authorization: token 
 Content-Type: application/json
 

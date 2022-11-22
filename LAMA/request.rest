@@ -1,4 +1,4 @@
-###
+### Cadastro
 POST http://localhost:3003/user/signUp 
 Content-Type: application/json
 
@@ -10,11 +10,22 @@ Content-Type: application/json
 }
 
 
-###
+### Login
 POST http://localhost:3003/user/login 
 Content-Type: application/json
 
 {
    "email": "elli@gmail.com", 
    "password":"12345678"
+}
+
+###  Registrar banda
+POST http://localhost:3003/band/adicionar 
+Authorization: token 
+Content-Type: application/json
+
+{
+   "name": "Chá de casa nova", 
+   "music_genre": "Sertanejo", 
+   "responsible": "Henrique e Juliano"
 }

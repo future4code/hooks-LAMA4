@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import BandBusiness from "../business/BandBusiness";
-import { BandInputDTO } from "../types/BandInputDTO";
+import { BandDataBase } from "../data/BandDataBase";
+import { BandInputDTO, ShowsDaysDTO } from "../types/BandInputDTO";
 
+const bandBusiness = new BandBusiness(new BandDataBase())
 export default class BandController {
-    constructor(
-        private bandBusiness: BandBusiness
-    ) { }
+ 
      createBandController = async (req: Request, res: Response)=> {
-
       try {
          const { name, music_genre, responsible } = req.body
 
@@ -17,7 +16,7 @@ export default class BandController {
             name, music_genre, responsible
          }
 
-         const result = await  this.bandBusiness.createBand(input, token)
+         const result = await bandBusiness.createBand(input, token)
 
          console.log(result)
             
@@ -27,6 +26,52 @@ export default class BandController {
          console.log(error.message);
          console.log( error.sqlMessage);
          res.send({ message: error.sqlMessage || error.message })
+      }
+   }
+
+
+   async detailsBand ( req : Request , res : Response){
+      try{
+        const idBand =  req.params.idBand as string
+   
+
+         const result = await bandBusiness.detailsBand(idBand)
+         res.send(result)
+
+      }catch (error: any) {
+         console.log(error.message);
+         console.log( error.sqlMessage);
+         res.send({ message: error.sqlMessage || error.message })
+   }
+}
+
+ async showsDays(req : Request , res : Response){
+   try {
+    
+      const input : ShowsDaysDTO = {
+         weekDay : req.body.weekDay,
+         startTime : req.body.startTime,
+         endTime : req.body.endTime,
+         bandId : req.params.bandId
+      }
+
+       await bandBusiness.showsDays(input)
+      res.send({message : "Added Shows" , input})
+   } catch (error : any) {
+      console.log("Erro aqui")
+   }}
+
+   async searchShows(req : Request , res : Response){
+      try {
+         let days = req.query.days as string
+         let order = req.query.order as string
+         const result = await bandBusiness.searchShows(days , order )
+
+         res.send(result)
+   
+
+      } catch (error:any) {
+         res.send(error.message)
       }
    }
 }

@@ -1,5 +1,5 @@
 CREATE TABLE
-    TABELAS_USUÁRIOS (
+    table_user (
         id VARCHAR(255) PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
@@ -8,7 +8,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    TABELA_SHOWS (
+    table_shows (
         id VARCHAR(255) PRIMARY KEY,
         week_day VARCHAR(255) NOT NULL,
         start_time INT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    TABELA_BANDAS (
+    table_bands (
         id VARCHAR(255) PRIMARY KEY,
         name VARCHAR(255) UNIQUE NOT NULL,
         music_genre VARCHAR(255) NOT NULL,

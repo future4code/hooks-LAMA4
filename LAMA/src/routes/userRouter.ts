@@ -8,11 +8,7 @@ import { Authenticator } from "../services/Authenticator";
 
 export const userRouter = express.Router();
 
-const userBusiness = new UserBusiness(new UserDatabase(),
-new IdGenerator(),
-new HashManager(),
-new Authenticator())
-const userController = new UserController(userBusiness);
+const userController = new UserController()
 
 userRouter.post("/signup", userController.signup);
 userRouter.post("/login", userController.login);

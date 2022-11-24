@@ -7,11 +7,11 @@ import {IdGenerator} from "../services/IdGenerator";
 
 export const bandRouter = Router()
 
-const bandBusiness = new BandBusiness(
-new BandDataBase(),
-new Authenticator(),
-new IdGenerator())
-
-const bandController = new BandController(bandBusiness)
+const bandController = new BandController()
 
 bandRouter.post("/add", bandController.createBandController)
+bandRouter.post("/added/:bandId" , bandController.showsDays)
+
+
+bandRouter.get("/details/:idBand" , bandController.detailsBand)
+bandRouter.get("/search" , bandController.searchShows)

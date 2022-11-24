@@ -5,17 +5,19 @@ import { HashManager } from "../services/HashManager";
 import { Authenticator } from "../services/Authenticator";
 import { BaseError } from "../error/BaseError";
 
+
+const  idGenerator = new IdGenerator()
+const  hashManager = new HashManager()
+const  authenticator = new Authenticator()
+
 export class UserBusiness {
     constructor(
         private userData: UserDatabase,
-        private idGenerator: IdGenerator,
-        private hashManager: HashManager,
-        private authenticator: Authenticator,
-    ) { }
+    ) {}
 
     async createUser(user: UserInputDTO) {
-
-        const { name, password, email, role } = user
+        try {
+            const { name, password, email, role } = user
 
         if (!name || !email || !password || !role) {
             throw new BaseError(422, "Invalid fields")
@@ -34,23 +36,28 @@ export class UserBusiness {
             throw new BaseError(422, "Invalid user role")
         }
 
-        const registeredUser = await this.userData.getUserByEmail(email)
-        if (registeredUser) {
-            throw new BaseError(422, "E-mail already registered")
-        }
+     
+        // const registeredUser = await this.userData.getUserByEmail(email)
+        // if (registeredUser) {
+        //     throw new BaseError(422, "E-mail already registered")
+        // }
 
-        const id = this.idGenerator.generate();
+        const id = idGenerator.generate();
+        const hashPassword : any =  hashManager.hash(user.password);
 
-        const hashManager = new HashManager();
-        const hashPassword = await hashManager.hash(user.password);
-
-        const userDatabase = new UserDatabase();
-        await userDatabase.createUser(id, user.email, user.name, hashPassword, user.role);
+      const user1 = {
+        id : id ,name, password, email, role
+      }
+        await this.userData.cadastroUser(user1);
 
         const authenticator = new Authenticator();
         const accessToken = authenticator.generateToken({ id, role: user.role });
 
         return accessToken;
+        } catch (error : any) {
+            console.log(error.message)
+        }
+        
     }
 
     async getUserByEmail(user: LoginInputDTO) {
@@ -75,10 +82,9 @@ export class UserBusiness {
             throw new BaseError(401, "User not found")
         }
 
-        const hashManager = new HashManager();
-        const hashCompare = await hashManager.compare(user.password, userFromDB.getPassword());
+     
+        const hashCompare = hashManager.compare(user.password, userFromDB.getPassword());
 
-        const authenticator = new Authenticator();
         const accessToken = authenticator.generateToken({ id: userFromDB.getId(), role: userFromDB.getRole() });
 
         if (!hashCompare) {

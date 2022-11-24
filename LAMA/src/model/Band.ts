@@ -19,4 +19,10 @@ export default class Band {
    public getResponsible() {
        return this.responsible
    }
+
 } 
+
+export interface BandDTO {
+    idBand : string,
+    bandName : string
+}

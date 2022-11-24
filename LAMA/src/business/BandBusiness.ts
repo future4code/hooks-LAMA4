@@ -1,15 +1,16 @@
 import { BandDataBase } from "../data/BandDataBase";
 import { BaseError } from "../error/BaseError";
-import Band from "../model/Band";
+import Band, { BandDTO } from "../model/Band";
 import { Authenticator } from "../services/Authenticator";
 import  {IdGenerator}  from "../services/IdGenerator";
-import { BandInputDTO } from "../types/BandInputDTO";
+import { BandInputDTO, ShowsDays, ShowsDaysDTO } from "../types/BandInputDTO";
+
+const authenticator= new Authenticator()
+ const idGenerator= new IdGenerator()
 
 export default class BandBusiness {
     constructor(
-        private bandDataBase: BandDataBase,
-        private authenticator: Authenticator,
-        private idGenerator: IdGenerator
+       private bandDataBase : BandDataBase
     ){}
 
     async createBand(band:BandInputDTO, token:string){
@@ -18,10 +19,9 @@ export default class BandBusiness {
             throw new BaseError(401,'Not authorized')
         }
 
-        const authenticatorRole = this.authenticator.getData(token)
+        const authenticatorRole = authenticator.getData(token)
 
         if(authenticatorRole.role !== "ADMIN"){
-
             throw new BaseError(406,'Invalid values')
         }
 
@@ -41,7 +41,7 @@ export default class BandBusiness {
             throw new BaseError(406,'Invalid values')
         }
 
-        const id = this.idGenerator.generate()
+        const id = idGenerator.generate()
 
         const modelBand = new Band(
             id,
@@ -49,11 +49,63 @@ export default class BandBusiness {
             music_genre,
             responsible
         )
-        console.log(modelBand);
-        
-
         await this.bandDataBase.insertBand(modelBand)
         
     }
 
+    async detailsBand(idBand : string){
+        try{
+           if(!idBand){
+            throw new Error("Insira um id ")
+           }
+
+           if(idBand.length === 0){
+            throw new Error("Insira um id correto")
+           }
+
+            const result = await this.bandDataBase.detailsBand(idBand)
+
+            return result;
+        }catch{
+            console.log("Erro na business")
+        }
+    }
+
+    async showsDays(input : ShowsDaysDTO){
+        try {
+            const {weekDay , startTime , endTime , bandId} = input
+
+            const id  = idGenerator.generate()
+    
+            const addedShows : ShowsDays = {
+                id : id,
+                week_day : weekDay,
+                start_time : startTime,
+                end_time : endTime,
+                band_id : bandId
+            }
+        
+            const result = await this.bandDataBase.showsDays(addedShows)
+            
+            return result
+        } catch ( error : any) {
+            console.log(error.message)
+        }
+      
+    }
+
+    async searchShows(days : string , order : string){
+        try{
+            if(!order){
+                order = "asc"
+            }
+            if(!days){
+                throw new Error("Necessario informar o dia ")
+            }
+            const result = await this.bandDataBase.searchShows(days , order)
+            return result
+        }catch(error:any){
+            console.log(error.message)
+        }
+    }
 }

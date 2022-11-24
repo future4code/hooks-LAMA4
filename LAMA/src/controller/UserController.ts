@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { UserInputDTO, LoginInputDTO} from "../model/User";
 import { UserBusiness } from "../business/UserBusiness";
-import { BaseDatabase } from "../data/BaseDatabase";
+import { BaseDatabase } from "../connection/BaseDatabase";
+import { UserDatabase } from "../data/UserDatabase";
 
+const  userBusiness = new  UserBusiness(new UserDatabase())
 export class UserController {
     constructor(
-        private userBusiness: UserBusiness
     ) { }
     async signup(req: Request, res: Response) {
         
@@ -19,7 +20,7 @@ export class UserController {
                 role,
             }
 
-            const userBusiness = new UserBusiness(name, email,password,role);
+        
             const token = await userBusiness.createUser(input);
 
             res.status(201).send({message:"User Createad",token})
@@ -40,7 +41,7 @@ export class UserController {
                 password
             };
 
-            const token = await this.userBusiness.getUserByEmail(loginData)
+            const token = await userBusiness.getUserByEmail(loginData)
             res.status(200).send({message:"sucess",token})
 
         } catch (error:any) {

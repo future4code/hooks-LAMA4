@@ -9,7 +9,7 @@ export class BandDataBase extends BaseDatabase{
 
    async insertBand(band:Band){
       try{
-         const result =  await  BaseDatabase.connection(this.TABLE_NAME)
+         const result =  await BaseDatabase.connection(this.TABLE_NAME)
          .insert(band)
 
          return result
@@ -18,11 +18,12 @@ export class BandDataBase extends BaseDatabase{
       }
     }
 
+
    async selectNameBand(name:string){
       try{
-         const [result] = await BaseDatabase.connection(this.TABLE_NAME)
+         const result = await BaseDatabase.connection(this.TABLE_NAME)
          .select("*")
-         .where({name})
+         .where({name : name})
           
          return result
 
@@ -30,6 +31,7 @@ export class BandDataBase extends BaseDatabase{
          throw new Error(error.sqlMessage || error.message)
       }
    }
+
 
    public async detailsBand (idBand : string){
       const result = await BaseDatabase.connection(this.TABLE_NAME).select("*")
@@ -45,7 +47,9 @@ export class BandDataBase extends BaseDatabase{
    public async searchShows(days : string , order : string){
       const result = await BaseDatabase.connection(this.TABLE_SHOWS).select("*")
       .where({week_day : days})
+
       .orderBy('start_time' , `${order}`)
+
       return result
    }
 }

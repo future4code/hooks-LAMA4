@@ -5,92 +5,101 @@ import { HashManager } from "../services/HashManager";
 import { Authenticator } from "../services/Authenticator";
 import { BaseError } from "../error/BaseError";
 
-
-const  idGenerator = new IdGenerator()
-const  hashManager = new HashManager()
-const  authenticator = new Authenticator()
+const idGenerator = new IdGenerator();
+const hashManager = new HashManager();
+const authenticator = new Authenticator();
 
 export class UserBusiness {
-    constructor(
-        private userData: UserDatabase,
-    ) {}
+  constructor(private userData: UserDatabase) {}
 
-    async createUser(user: UserInputDTO) {
-        try {
-            const { name, password, email, role } = user
+  async createUser(user: UserInputDTO) {
+    try {
+      const { name, password, email, role } = user;
 
-        if (!name || !email || !password || !role) {
-            throw new BaseError(422, "Invalid fields")
+      if (!name || !email || !password || !role) {
+        throw new BaseError(422, "Invalid fields");
+      }
 
-        }
+      if (email.indexOf("@") === -1) {
+        throw new BaseError(422, "Invalid email");
+      }
 
-        if (email.indexOf("@") === -1) {
-            throw new BaseError(422, "Invalid email");
-        }
+      if (password.length < 6) {
+        throw new BaseError(422, "Invalid password");
+      }
 
-        if (password.length < 6) {
-            throw new BaseError(422, "Invalid password")
-        }
+      if (role !== "NORMAL" && role !== "ADMIN") {
+        throw new BaseError(422, "Invalid user role");
+      }
 
-        if (role !== "NORMAL" && role !== "ADMIN") {
-            throw new BaseError(422, "Invalid user role")
-        }
+      if (!role) {
+        user.role = "NORMAL";
+      }
+      // const registeredUser = await this.userData.getUserByEmail(email)
+      // if (registeredUser) {
+      //     throw new BaseError(422, "E-mail already registered")
+      // }
 
-     
-        // const registeredUser = await this.userData.getUserByEmail(email)
-        // if (registeredUser) {
-        //     throw new BaseError(422, "E-mail already registered")
-        // }
-
-        const id = idGenerator.generate();
-        const hashPassword : any =  hashManager.hash(user.password);
+      const generateId = idGenerator.generate();
+      const hashPassword: string =await hashManager.hash(password);
 
       const user1 = {
-        id : id ,name, password, email, role
-      }
-        await this.userData.cadastroUser(user1);
+        id: generateId,
+        name,
+        email,
+        password : hashPassword,
+        role,
+      };
 
-        const authenticator = new Authenticator();
-        const accessToken = authenticator.generateToken({ id, role: user.role });
+      await this.userData.cadastroUser(user1);
 
-        return accessToken;
-        } catch (error : any) {
-            console.log(error.message)
-        }
-        
+      const authenticator = new Authenticator();
+      const accessToken = authenticator.generateToken({
+        id: user1.id,
+        role: user1.role,
+      });
+
+      return accessToken;
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
+
+  async getUserByEmail(user: LoginInputDTO) {
+    const { email, password } = user;
+    if (!email || !password) {
+      throw new BaseError(422, "'email' and 'password' are required");
     }
 
-    async getUserByEmail(user: LoginInputDTO) {
-
-        const { email, password } = user
-        if (!email || !password) {
-            throw new BaseError(422, "'email' and 'password' are required")
-        }
-
-        if (email.indexOf("@") === -1) {
-            throw new BaseError(422, "Invalid email");
-        }
-
-        if (password.length < 6) {
-            throw new BaseError(422, "Invalid password");
-        }
-
-        const userDatabase = new UserDatabase();
-        const userFromDB = await userDatabase.getUserByEmail(user.email);
-
-        if (!userFromDB) {
-            throw new BaseError(401, "User not found")
-        }
-
-     
-        const hashCompare = hashManager.compare(user.password, userFromDB.getPassword());
-
-        const accessToken = authenticator.generateToken({ id: userFromDB.getId(), role: userFromDB.getRole() });
-
-        if (!hashCompare) {
-            throw new Error("Invalid Password!");
-        }
-
-        return accessToken;
+    if (email.indexOf("@") === -1) {
+      throw new BaseError(422, "Invalid email");
     }
+
+    if (password.length < 6) {
+      throw new BaseError(422, "Invalid password");
+    }
+
+    const userDatabase = new UserDatabase();
+    const userFromDB = await userDatabase.getUserByEmail(user.email);
+
+    if (!userFromDB) {
+      throw new BaseError(401, "User not found");
+    }
+
+    const hashCompare = hashManager.compare(
+      user.password,
+      userFromDB.getPassword()
+    );
+
+    const accessToken = authenticator.generateToken({
+      id: userFromDB.getId(),
+      role: userFromDB.getRole(),
+    });
+
+    if (!hashCompare) {
+      throw new Error("Invalid Password!");
+    }
+
+    return accessToken;
+  }
 }

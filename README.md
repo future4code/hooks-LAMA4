@@ -1,5 +1,5 @@
 <h1 align="center">
- 🎵 Projeto - O LAMA 🎵
+ 🎵 Projeto - LAMA 🎵
 </h1>
 <br>
 

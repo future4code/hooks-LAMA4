@@ -21,12 +21,14 @@ O projeto é um sistema interno de um novo festival de música, então sejam bem
 - 🎯 Objetivo do Projeto
 - 📌 Funcionalidades
 - ✔️ Requesitos Mínimos
+- 🔗 Link da documentação do postman
 - 📚 Aprendizado
 - 🛠️ Tecnologias Utilizadas
 - 📦 Pacotes Utilizados
 - ⚙️ Como rodar o projeto localmente
 - 🔃 Rotas
 - ✨ O que funciona
+- ❌ O Que Não Funciona
 - 👨‍💻 Desenvolvedores
 
 <br>
@@ -110,6 +112,14 @@ O endpoint receberá o identificador do evento e devolverá todas as fotos deste
 
 <br>
 
+## 🔗 Link da documentação do postman
+
+<br>
+
+https://documenter.getpostman.com/view/22901544/2s8Ysp2b4b
+
+<br>
+
 ## 📚 Aprendizado
 
 <br>
@@ -140,7 +150,6 @@ Para a construção do projeto, as seguintes tecnologias foram utilizadas:
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
-- [nodemailer](https://www.npmjs.com/package/nodemailer)
 - [Uuid](https://www.uuidgenerator.net/)
 
 <br>
@@ -171,16 +180,19 @@ E divirta-se :)
 
 ## 🔃 Rotas BANDAS:
 
-| Método HTTP | Endpoint    | Descrição               |
-| ----------- | ----------- | ----------------------- |
-| POST        | `/band/add` | Cria/cadastra uma banda |
+| Método HTTP | Endpoint                | Descrição                              |
+| ----------- | ----------------------- | -------------------------------------- |
+| POST        | `/band/add`             | Cria/cadastra uma banda                |
+| GET         | `/band/details/:idBand` | Visualização de detalhes sobre a banda |
 
 <br>
 
 ## 🔃 Rotas SHOWS:
 
-| Método HTTP | Endpoint | Descrição |
-| ----------- | -------- | --------- |
+| Método HTTP | Endpoint               | Descrição                        |
+| ----------- | ---------------------- | -------------------------------- |
+| GET         | `/band/details/search` | Pegar todos os shows de uma data |
+| POST        | `band/added/:bandId`   | Adicionar um show a um dia       |
 
 <br>
 
@@ -189,8 +201,18 @@ E divirta-se :)
 - Cadastrar
 - Login
 - Registrar banda
+- Visualização de detalhes sobre a banda
+- Adicionar um show a um dia
+- Pegar todos os shows de uma data
 
 <br>
+
+## ❌ O Que Não Funciona
+
+- Criar um ingresso
+- Comprar ingresso
+- Adicionar foto
+- Pegar todas as fotos
 
 <h1>
     <br>

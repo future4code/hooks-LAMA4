@@ -3,7 +3,7 @@ import { User } from "../model/User";
 
 export class UserDatabase extends BaseDatabase {
 
- protected TABLE_NAME = "table_user";
+ protected TABLE_NAME = "TABELAS_USUÁRIOS";
  public async cadastroUser(products : any) : Promise<void>{
   return await BaseDatabase.connection(this.TABLE_NAME).insert(products)
 }

@@ -3,9 +3,9 @@ POST http://localhost:3003/user/signup
 Content-Type: application/json
 
 {
-   "name":"Dickson", 
-   "email":"dickson@labenu.com", 
-   "password":"12345678", 
+   "name":"Felipe", 
+   "email":"felipe@gmail.com", 
+   "password":"1234567", 
    "role":"ADMIN"
 }
 
@@ -15,13 +15,13 @@ POST http://localhost:3003/user/login
 Content-Type: application/json
 
 {
-   "email": "dickson@labenu.com", 
-   "password":"12345678"
+   "email": "felipe@gmail.com", 
+   "password":"1234567"
 }
 
 ###  Registrar banda
 POST http://localhost:3003/band/add 
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZTQzMDEyLWRlZGItNGQ0Ni05YjNjLTRhMDMzZjlhMTIzNyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2OTMzNTE5MSwiZXhwIjoxNjY5MzM1NzkxfQ.Rb0xtAYdeLMUSSmSrhh3rtvCGKJJZiaza0hlUwE_ilc
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTI1ZTdiLWRmNmItNGU3NC1iOWZkLTdmMDE5ODQyMzUxYyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2OTI5OTY2NSwiZXhwIjoxNjY5MzAwMjY1fQ.8NrfYa3oIBJN6UyM0NnyN5KH5TpvPi-z83ZLJbcsQWk
 Content-Type: application/json
 
 {
@@ -32,7 +32,11 @@ Content-Type: application/json
 
 
 ### DETALHES DAS BANDAS
-GET http://localhost:3003/band/details/8cde2a42-21c4-46ed-ac3c-ab02d86310f2
+GET http://localhost:3003/band/details/28b90bd2-c9f9-4842-b80f-9868f3b0c358
+
+###BUSCAR BANDA PELO DIA E ORDENAR
+GET http://localhost:3003/band/details/search?domingo
+
 
 
 ###BUSCAR BANDA PELO DIA E ORDENAR

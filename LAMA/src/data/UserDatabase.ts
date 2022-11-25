@@ -3,13 +3,13 @@ import { User } from "../model/User";
 
 export class UserDatabase extends BaseDatabase {
 
- protected TABLE_NAME = "table_user"
 
-
- public async cadastroUser(user : any) : Promise<number>{
-  const result = await BaseDatabase.connection(this.TABLE_NAME).insert(user)
+ protected TABLE_NAME = "TABELAS_USUÁRIOS";
+ public async cadastroUser(products : any) : Promise<void>{
+  return await BaseDatabase.connection(this.TABLE_NAME).insert(products)
 
   return result[0]
+
 }
 
   public async getUserByEmail(email: string): Promise<User> {

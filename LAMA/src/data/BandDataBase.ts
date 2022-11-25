@@ -4,8 +4,8 @@ import { ShowsDays } from "../types/BandInputDTO";
 
 
 export class BandDataBase extends BaseDatabase{
-   protected TABLE_NAME = "table_bands"
-   protected TABLE_SHOWS = "table_shows"
+   protected TABLE_NAME = "TABELA_BANDAS"
+   protected TABLE_SHOWS = "TABELA_SHOWS"
 
    async insertBand(band:Band){
       try{

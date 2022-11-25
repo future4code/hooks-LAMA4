@@ -45,9 +45,9 @@ export class BandDataBase extends BaseDatabase{
    }
 
    public async searchShows(days : string , order : string){
-      const result = await BaseDatabase.connection(this.TABLE_SHOWS).select("*")
+      const result = await BaseDatabase.connection(this.TABLE_SHOWS)
+      .select("*")
       .where({week_day : days})
-
       .orderBy('start_time' , `${order}`)
 
       return result

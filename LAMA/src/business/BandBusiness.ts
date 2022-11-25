@@ -98,11 +98,14 @@ export default class BandBusiness {
                 throw new BaseError(406,'Fill in the fields, please')
             }
             
-            // if(weekDay != "SEXTA" && weekDay != "SABADO" && weekDay != "DOMINGO"){
-            //     throw new BaseError(406, "Invalid Day")
-            // }
-        
-           
+            if (isNaN(startTime) || !Number.isInteger(startTime) || isNaN(endTime) || !Number.isInteger(endTime) || startTime<8 || endTime<8 || startTime>23 || endTime>23) {
+                throw new BaseError(401, `Start_time and end_time have to be an integer number between 8 and 23!`)
+            };
+    
+            if (weekDay.toLowerCase() !== "friday" && weekDay.toLowerCase() !== "saturday" && weekDay.toLowerCase() !== "sunday") {
+                throw new BaseError(422, `Week_day only accepts 'friday', 'saturday' or 'sunday' as a valid result`)
+            }
+
             const id  = idGenerator.generate()
     
             const addedShows : ShowsDays = {
@@ -128,8 +131,13 @@ export default class BandBusiness {
                 order = "asc"
             }
             if(!days){
-                throw new Error("Necessario informar o dia ")
+                throw new BaseError(422, `Invalid fields!`)
             }
+
+            if (days.toLowerCase() !== "friday" && days.toLowerCase() !== "saturday" && days.toLowerCase() !== "sunday") {
+                throw new BaseError(422, `Week_day only accepts 'friday', 'saturday' or 'sunday' as a valid result`)
+            };
+
             const result = await this.bandDataBase.searchShows(days , order)
             return result
         }catch(error:any){

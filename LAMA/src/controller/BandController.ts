@@ -10,7 +10,7 @@ export default class BandController {
       try {
          const { name, music_genre, responsible } = req.body
 
-         const token: string = req.headers.authorization as string
+         const token = req.headers.authorization as string
 
          const input: BandInputDTO = {
             name, music_genre, responsible
@@ -33,7 +33,7 @@ export default class BandController {
    async detailsBand ( req : Request , res : Response){
       try{
         const idBand =  req.params.idBand as string
-   
+       
 
          const result = await bandBusiness.detailsBand(idBand)
          res.send(result)
@@ -47,7 +47,7 @@ export default class BandController {
 
  async showsDays(req : Request , res : Response){
    try {
-    
+      const token = req.headers.authorization as string
       const input : ShowsDaysDTO = {
          weekDay : req.body.weekDay,
          startTime : req.body.startTime,
@@ -55,10 +55,10 @@ export default class BandController {
          bandId : req.params.bandId
       }
 
-       await bandBusiness.showsDays(input)
+       await bandBusiness.showsDays(input , token)
       res.send({message : "Added Shows" , input})
    } catch (error : any) {
-      console.log("Erro aqui")
+      res.send(error.message)
    }}
 
    async searchShows(req : Request , res : Response){
@@ -66,7 +66,7 @@ export default class BandController {
          let days = req.query.days as string
          let order = req.query.order as string
          const result = await bandBusiness.searchShows(days , order )
-
+         
          res.send(result)
    
 

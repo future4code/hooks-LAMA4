@@ -5,8 +5,10 @@ import { Authenticator } from "../services/Authenticator";
 import  {IdGenerator}  from "../services/IdGenerator";
 import { BandInputDTO, ShowsDays, ShowsDaysDTO } from "../types/BandInputDTO";
 
+
 const authenticator= new Authenticator()
  const idGenerator= new IdGenerator()
+
 
 export default class BandBusiness {
     constructor(
@@ -26,7 +28,7 @@ export default class BandBusiness {
         }
 
         const {name, music_genre, responsible} = band
-
+    
         const registeredNameBand = await this.bandDataBase.selectNameBand(name)
        
         if(registeredNameBand){
@@ -55,6 +57,11 @@ export default class BandBusiness {
 
     async detailsBand(idBand : string){
         try{
+            // if(!token){
+            //     throw new Error("Insira o authorization")
+            // }
+           
+          
            if(!idBand){
             throw new Error("Insira um id ")
            }
@@ -66,15 +73,36 @@ export default class BandBusiness {
             const result = await this.bandDataBase.detailsBand(idBand)
 
             return result;
-        }catch{
+        }catch(error : any  ){
+            console.log(error.message)
             console.log("Erro na business")
         }
     }
 
-    async showsDays(input : ShowsDaysDTO){
+    async showsDays(input : ShowsDaysDTO , token : string){
         try {
+            if(!token){
+                throw new BaseError(401,'Not authorized')
+            }
+            const authenticatorRole = authenticator.getData(token)
+
+            if(authenticatorRole.role !== "ADMIN"){
+                throw new BaseError(406 , "Invalid values" )
+            }
+
             const {weekDay , startTime , endTime , bandId} = input
 
+            
+
+            if(!weekDay || !startTime || !endTime || !bandId){
+                throw new BaseError(406,'Fill in the fields, please')
+            }
+            
+            // if(weekDay != "SEXTA" && weekDay != "SABADO" && weekDay != "DOMINGO"){
+            //     throw new BaseError(406, "Invalid Day")
+            // }
+        
+           
             const id  = idGenerator.generate()
     
             const addedShows : ShowsDays = {
@@ -89,7 +117,7 @@ export default class BandBusiness {
             
             return result
         } catch ( error : any) {
-            console.log(error.message)
+           throw new BaseError(400, error.message)
         }
       
     }

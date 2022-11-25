@@ -1,27 +1,27 @@
 import { Request, Response } from "express";
-import { UserInputDTO, LoginInputDTO} from "../model/User";
+import { UserInputDTO, LoginInputDTO, UserRole} from "../model/User";
 import { UserBusiness } from "../business/UserBusiness";
 import { BaseDatabase } from "../connection/BaseDatabase";
 import { UserDatabase } from "../data/UserDatabase";
 
-const  userBusiness = new  UserBusiness(new UserDatabase())
+const  userBusiness = new UserBusiness(new UserDatabase())
 export class UserController {
     constructor(
     ) { }
     async signup(req: Request, res: Response) {
         
-        const {name, email,password,role} = req.body
+        const {name, email, password, role} = req.body
         try {
 
             const input: UserInputDTO = {
-                email,
                 name,
+                email,
                 password,
-                role,
+                role
             }
 
-        
             const token = await userBusiness.createUser(input);
+            console.log(token)
 
             res.status(201).send({message:"User Createad",token})
 

@@ -56,7 +56,7 @@ export default class BandController {
       }
 
        await bandBusiness.showsDays(input , token)
-      res.send({message : "Added Shows" , input})
+      res.status(201).send({message : "Show created successfully", input})
    } catch (error : any) {
       res.send(error.message)
    }}
@@ -67,7 +67,7 @@ export default class BandController {
          let order = req.query.order as string
          const result = await bandBusiness.searchShows(days , order )
          
-         res.send(result)
+         res.status(201).send(result)
    
 
       } catch (error:any) {

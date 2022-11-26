@@ -30,8 +30,9 @@ CREATE TABLE
         id VARCHAR(255) PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         value DECIMAL(10, 2) NOT NULL,
+        quantity BIGINT NOT NULL,
         show_id VARCHAR(255) UNIQUE NOT NULL,
-        quantity INT NOT NULL DEFAULT 0,
+        sold INT NOT NULL DEFAULT 0,
         FOREIGN KEY (show_id) REFERENCES NOME_TABELA_SHOWS(id)
     );
 

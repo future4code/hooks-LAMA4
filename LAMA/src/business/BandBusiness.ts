@@ -1,6 +1,8 @@
+import { localeData } from "moment";
 import { BandDataBase } from "../data/BandDataBase";
 import { BaseError } from "../error/BaseError";
 import Band, { BandDTO } from "../model/Band";
+import Ticket, { TicketShow } from "../model/Ticket";
 import { Authenticator } from "../services/Authenticator";
 import  {IdGenerator}  from "../services/IdGenerator";
 import { BandInputDTO, ShowsDays, ShowsDaysDTO } from "../types/BandInputDTO";
@@ -142,6 +144,46 @@ export default class BandBusiness {
             return result
         }catch(error:any){
             console.log(error.message)
+        }
+    }
+
+    async createTicket(input : any , token : string) : Promise<Ticket>{
+        try {
+             if(!token){
+                 throw new BaseError(401,'Not authorized')
+            }
+
+            const authenticatorRole = authenticator.getData(token)
+
+            if(authenticatorRole.role !== "ADMIN"){
+                throw new BaseError(406 , "Invalid values" )
+            }
+
+            const {name , value ,quantity , showId} = input 
+            
+            if(!name || !value || !quantity || !showId){
+                throw new BaseError(406,'Fill in the fields, please')
+            }
+
+            if(quantity <= 0){
+                throw new BaseError(402 , "Invalid amount")
+            }
+
+            const id  = idGenerator.generate()
+            const addTicket : TicketShow = {
+                id,
+                name,
+                value,
+                quantity,
+                show_id : showId
+            }
+
+            const result = await this.bandDataBase.createTicket(addTicket)
+
+            return result
+            
+        } catch (error:any) {
+            throw new BaseError(400 , error.message)
         }
     }
 }

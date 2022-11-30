@@ -1,12 +1,13 @@
 import Band from "../model/Band";
 import { BaseDatabase } from "../connection/BaseDatabase";
 import { ShowsDays } from "../types/BandInputDTO";
+import Ticket, { TicketShow } from "../model/Ticket";
 
 
 export class BandDataBase extends BaseDatabase{
    protected TABLE_NAME = "TABELA_BANDAS"
    protected TABLE_SHOWS = "TABELA_SHOWS"
-
+   protected TABLE_TICKET = "TABELA_INGRESSOS"
    async insertBand(band:Band){
       try{
          const result =  await BaseDatabase.connection(this.TABLE_NAME)
@@ -51,5 +52,9 @@ export class BandDataBase extends BaseDatabase{
       .orderBy('start_time' , `${order}`)
 
       return result
+   }
+
+   async createTicket(addTicket : TicketShow) : Promise<Ticket>{
+      return await BaseDatabase.connection(this.TABLE_TICKET).insert(addTicket)
    }
 }

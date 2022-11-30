@@ -15,13 +15,13 @@ POST http://localhost:3003/user/login
 Content-Type: application/json
 
 {
-   "email": "felipe@gmail.com", 
-   "password":"1234567"
+   "email": "dickson@gmail.com", 
+   "password":"12345678"
 }
 
 ###  Registrar banda
 POST http://localhost:3003/band/add 
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTI1ZTdiLWRmNmItNGU3NC1iOWZkLTdmMDE5ODQyMzUxYyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2OTI5OTY2NSwiZXhwIjoxNjY5MzAwMjY1fQ.8NrfYa3oIBJN6UyM0NnyN5KH5TpvPi-z83ZLJbcsQWk
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg3YzM2OWFlLTI5MDUtNGI4Zi1hNWQzLTczMDE3NjM1ODhkZSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2OTQyMDgyMSwiZXhwIjoxNjY5NDIxNDIxfQ.WCotrUkgiK_BkbxitRhvqZisfSLT3eFcLtu9s_ng4zY
 Content-Type: application/json
 
 {
@@ -53,3 +53,13 @@ Content-Type: application/json
     "endTime" : 13
 }
 
+### ADICIONAR INGRESSOS
+POST http://localhost:3003/band/ticket/d6b7b601-41c9-475b-b851-59eb53ada29a
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg3YzM2OWFlLTI5MDUtNGI4Zi1hNWQzLTczMDE3NjM1ODhkZSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2OTQyMDkyMiwiZXhwIjoxNjY5NDIxNTIyfQ.aAX9nG94pN0gIA3zEWB09fcqDc2ngN1kiT7E4hooC9o
+Content-Type: application/json
+
+{
+   "name" : "O ultimo show do ano",
+    "value" : 200,
+    "quantity" : 400
+}

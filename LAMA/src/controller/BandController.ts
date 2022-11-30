@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import BandBusiness from "../business/BandBusiness";
 import { BandDataBase } from "../data/BandDataBase";
+import { TicketInputDTO } from "../model/Ticket";
 import { BandInputDTO, ShowsDaysDTO } from "../types/BandInputDTO";
 
 const bandBusiness = new BandBusiness(new BandDataBase())
@@ -70,6 +71,29 @@ export default class BandController {
          res.status(201).send(result)
    
 
+      } catch (error:any) {
+         res.send(error.message)
+      }
+   }
+
+   async createTicket (req : Request , res : Response) {
+      try {
+         const {name , value ,quantity} = req.body
+         const token = req.headers.authorization as string
+         const showId = req.params.showId
+        
+         const input : TicketInputDTO = {
+            name,
+            value,
+            showId,
+            quantity,
+         }
+
+         console.log(input)
+         await bandBusiness.createTicket(input , token)
+         res.send({message : "Ticket created successfully"})
+
+         
       } catch (error:any) {
          res.send(error.message)
       }

@@ -1,0 +1,55 @@
+### Cadastro
+POST http://localhost:3003/user/signup 
+Content-Type: application/json
+
+{
+   "name":"Felipe", 
+   "email":"felipe@gmail.com", 
+   "password":"1234567", 
+   "role":"ADMIN"
+}
+
+
+### Login
+POST http://localhost:3003/user/login 
+Content-Type: application/json
+
+{
+   "email": "felipe@gmail.com", 
+   "password":"1234567"
+}
+
+###  Registrar banda
+POST http://localhost:3003/band/add 
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwMTI1ZTdiLWRmNmItNGU3NC1iOWZkLTdmMDE5ODQyMzUxYyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2OTI5OTY2NSwiZXhwIjoxNjY5MzAwMjY1fQ.8NrfYa3oIBJN6UyM0NnyN5KH5TpvPi-z83ZLJbcsQWk
+Content-Type: application/json
+
+{
+   "name": "Matanza", 
+   "music_genre": "Rock", 
+   "responsible": "Jimmy"
+}
+
+
+### DETALHES DAS BANDAS
+GET http://localhost:3003/band/details/28b90bd2-c9f9-4842-b80f-9868f3b0c358
+
+###BUSCAR BANDA PELO DIA E ORDENAR
+GET http://localhost:3003/band/details/search?domingo
+
+
+
+###BUSCAR BANDA PELO DIA E ORDENAR
+GET http://localhost:3003/band/details/search?day="DOMINGO"
+
+### ADICIONAR LISTA DE SHOWS
+POST http://localhost:3003/band/added/4583b5b7-f1d1-41dc-8c0f-5b634275201c
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZTQzMDEyLWRlZGItNGQ0Ni05YjNjLTRhMDMzZjlhMTIzNyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2OTMzODQ4OSwiZXhwIjoxNjY5MzM5MDg5fQ.wrLdldAHqRbK06e4axKnqzI-22lH3NUQ1eJ7zN1hT6w
+Content-Type: application/json
+
+{
+   "weekDay" : "SEXTA",
+    "startTime" : 12,
+    "endTime" : 13
+}
+
